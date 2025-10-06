@@ -98,13 +98,14 @@ def summary(game_name, tagline, region):
 
     return ret
     
+# testing code
 
-if __name__ == "__main__":
-    start = timer()
-    puuid = summoner.get_account_details_by_name("watermelon", "x1gua", "sg2")['puuid']
-    matches = match.get_full_year_matches(puuid)
-    for match_id in matches:
-        match.get_match_details_by_match_id(match_id)
+# if __name__ == "__main__":
+#     start = timer()
+#     puuid = summoner.get_account_details_by_name("watermelon", "x1gua", "sg2")['puuid']
+#     matches = match.get_full_year_matches(puuid)
+#     for match_id in matches:
+#         match.get_match_details_by_match_id(match_id)
     
-    end = timer()
-    print(f"Summary run time: {end - start:.2f} seconds")
+#     end = timer()
+#     print(f"Summary run time: {end - start:.2f} seconds")
