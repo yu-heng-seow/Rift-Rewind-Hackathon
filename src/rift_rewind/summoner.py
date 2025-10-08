@@ -1,7 +1,7 @@
 import requests
 import dotenv
 import os
-from functionality import request_with_retry
+from .functionality import request_with_retry
 
 dotenv.load_dotenv()
 api_key = os.getenv("RIOT_API_KEY")
