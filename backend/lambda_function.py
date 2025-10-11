@@ -1,102 +1,124 @@
+import http.client
 import json
-import uuid
-import boto3
+import logging
+import os
+import urllib.request
 
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('player_data')
+log_level = os.environ.get("LOG_LEVEL", "INFO").strip().upper()
+logging.basicConfig(format="[%(asctime)s] p%(process)s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
+logger.setLevel(log_level)
 
-def get_named_parameter(event, name):
-    """
-    Get a parameter from the lambda event
-    """
-    return next(item for item in event['parameters'] if item['name'] == name)['value']
+AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
+ACTION_GROUP_NAME = "WebSearchActionGroup"
+FUNCTION_NAMES = ["tavily-ai-search", "google-search"]
 
-def get_player_data(player_id):
-    """
-    Retrieve game data of a specific player
-    
-    Args:
-        player_id (string): The unique identifier for the player.
-    """
-    try:
-        response = table.get_item(Key={'player_id': player_id})
-        if 'Item' in response:
-            return response['Item']
-        else:
-            return {'message': f'No data found with ID {player_id}'}
-    except Exception as e:
-        return {'error': str(e)}
-    
-def create_lol_player(player_name, rank, region, main_role, favorite_champion):
-    """
-    Create a new League of Legends player profile.
-    
-    Args:
-        player_name (string): The in-game name of the player.
-        rank (string): The current rank of the player (e.g. 'Gold IV', 'Diamond I').
-        region (string): The server region (e.g. 'NA', 'EUW', 'SG').
-        main_role (string): The player’s main role (e.g. 'Top', 'Jungle', 'Mid', 'ADC', 'Support').
-        favorite_champion (string): The champion the player uses most frequently.
-    """
-    try:
-        player_id = str(uuid.uuid4())[:8]
-        table.put_item(
-            Item={
-                'player_id': player_id,
-                'player_name': player_name,
-                'rank': rank,
-                'region': region,
-                'main_role': main_role,
-                'favorite_champion': favorite_champion
-            }
-        )
-        return {'player_id': player_id}
-    except Exception as e:
-        return {'error': str(e)}
-    
-def lambda_handler(event, context):
-    # get the action group used during the invocation of the lambda function
-    actionGroup = event.get('actionGroup', '')
-    
-    # name of the function that should be invoked
-    function = event.get('function', '')
-    
-    # parameters to invoke function with
-    parameters = event.get('parameters', [])
 
-    if function == 'get_player_data':
-        player_id = get_named_parameter(event, "player_id")
-        if player_id:
-            response = str(get_player_data(player_id))
-            responseBody = {'TEXT': {'body': json.dumps(response)}}
-        else:
-            responseBody = {'TEXT': {'body': 'Missing player_id parameter'}}
-    
-    elif function == 'create_lol_player':
-        player_name = get_named_parameter(event, "player_name")
-        rank = get_named_parameter(event, "rank")
-        region = get_named_parameter(event, "region")
-        main_role = get_named_parameter(event, "main_role")
-        favorite_champion = get_named_parameter(event, "favorite_champion")
-        
-        if all([player_name, rank, region, main_role, favorite_champion]):
-            response = str(create_lol_player(player_name, rank, region, main_role, favorite_champion))
-            responseBody = {'TEXT': {'body': json.dumps(response)}}
-        else:
-            responseBody = {'TEXT': {'body': 'Missing required parameters'}}
+SERPER_API_KEY = os.environ.get("SERPER_API_KEY")
+TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
 
-    else:
-        responseBody = {'TEXT': {'body': 'Invalid function'}}
+def extract_search_params(action_group, function, parameters):
+    if action_group != ACTION_GROUP_NAME:
+        logger.error(f"unexpected name '{action_group}'; expected valid action group name '{ACTION_GROUP_NAME}'")
+        return None, None
 
-    action_response = {
-        'actionGroup': actionGroup,
-        'function': function,
-        'functionResponse': {
-            'responseBody': responseBody
-        }
+    if function not in FUNCTION_NAMES:
+        logger.error(f"unexpected function name '{function}'; valid function names are'{FUNCTION_NAMES}'")
+        return None, None
+
+    search_query = next(
+        (param["value"] for param in parameters if param["name"] == "search_query"),
+        None,
+    )
+
+    target_website = next(
+        (param["value"] for param in parameters if param["name"] == "target_website"),
+        None,
+    )
+
+    logger.debug(f"extract_search_params: {search_query=} {target_website=}")
+
+    return search_query, target_website
+
+
+def google_search(search_query: str, target_website: str = "") -> str:
+    query = search_query
+    if target_website:
+        query += f" site:{target_website}"
+
+    conn = http.client.HTTPSConnection("google.serper.dev")
+    payload = json.dumps({"q": query})
+    headers = {"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"}
+
+    search_type = "news"  # "news", "search",
+    conn.request("POST", f"/{search_type}", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+
+    return data.decode("utf-8")
+
+
+def tavily_ai_search(search_query: str, target_website: str = "") -> str:
+    logger.info(f"executing Tavily AI search with {search_query=}")
+
+    base_url = "https://api.tavily.com/search"
+    headers = {"Content-Type": "application/json", "Accept": "application/json"}
+    payload = {
+        "api_key": TAVILY_API_KEY,
+        "query": search_query,
+        "search_depth": "advanced",
+        "include_images": False,
+        "include_answer": False,
+        "include_raw_content": False,
+        "max_results": 3,
+        "include_domains": [target_website] if target_website else [],
+        "exclude_domains": [],
     }
 
-    function_response = {'response': action_response, 'messageVersion': event['messageVersion']}
-    print("Response: {}".format(function_response))
+    data = json.dumps(payload).encode("utf-8")
+    request = urllib.request.Request(base_url, data=data, headers=headers)  # nosec: B310 fixed url we want to open
 
-    return function_response
+    try:
+        response = urllib.request.urlopen(request)  # nosec: B310 fixed url we want to open
+        response_data: str = response.read().decode("utf-8")
+        logger.debug(f"response from Tavily AI search {response_data=}")
+        return response_data
+    except urllib.error.HTTPError as e:
+        logger.error(f"failed to retrieve search results from Tavily AI Search, error: {e.code}")
+
+    return ""
+
+
+def lambda_handler(event, _):  # type: ignore
+    logging.debug(f"lambda_handler {event=}")
+
+    action_group = event["actionGroup"]
+    function = event["function"]
+    parameters = event.get("parameters", [])
+
+    logger.info(f"lambda_handler: {action_group=} {function=}")
+
+    search_query, target_website = extract_search_params(action_group, function, parameters)
+
+    search_results: str = ""
+    if function == "tavily-ai-search":
+        search_results = tavily_ai_search(search_query, target_website)
+    elif function == "google-search":
+        search_results = google_search(search_query, target_website)
+
+    logger.debug(f"query results {search_results=}")
+
+    # Prepare the response
+    function_response_body = {"TEXT": {"body": f"Here are the top search results for the query '{search_query}': {search_results} "}}
+
+    action_response = {
+        "actionGroup": action_group,
+        "function": function,
+        "functionResponse": {"responseBody": function_response_body},
+    }
+
+    response = {"response": action_response, "messageVersion": event["messageVersion"]}
+
+    logger.debug(f"lambda_handler: {response=}")
+
+    return response
