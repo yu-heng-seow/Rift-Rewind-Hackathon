@@ -1,40 +1,49 @@
-import { useEffect, useRef } from "react"
-import { motion } from "framer-motion"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Card } from "@/components/ui/card"
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Card } from "@/components/ui/card";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
   { label: "Games Played", value: "487", icon: "🎮" },
   { label: "Hours in Game", value: "324", icon: "⏱️" },
   { label: "Total Kills", value: "3,892", icon: "⚔️" },
   { label: "Pentakills", value: "7", icon: "🔥" }
-]
+];
 
 const StatsOverview = () => {
-  const sectionRef = useRef(null)
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return
+    if (!sectionRef.current) return;
 
-    const cards = sectionRef.current.querySelectorAll(".stat-card")
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray(".stat-card");
 
-    cards.forEach((card, index) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          end: "top 50%",
-          scrub: 1
-        },
-        y: 100,
-        opacity: 0,
-        delay: index * 0.1
-      })
-    })
-  }, [])
+      cards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { y: 80, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            delay: index * 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              once: true
+            }
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section ref={sectionRef} className="py-24 px-4 relative">
@@ -55,7 +64,7 @@ const StatsOverview = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
+          {stats.map((stat) => (
             <motion.div
               key={stat.label}
               whileHover={{ scale: 1.05, y: -10 }}
@@ -80,7 +89,7 @@ const StatsOverview = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default StatsOverview
+export default StatsOverview;
