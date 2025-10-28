@@ -64,7 +64,7 @@ def summary(game_name, tagline, region):
         ret['details']['kda']['kill'] += p.get('kills', 0)
         ret['details']['kda']['death'] += p.get('deaths', 0)
         ret['details']['kda']['assist'] += p.get('assists', 0)
-        ret['details']['champions'][p.get('championName', 'Unknown')] += 1
+        ret['details']['champions'][p   .get('championName', 'Unknown')] += 1
         ret['details']['totalGold'] += p.get('goldEarned', 0)
         ret['details']['visionScore'] += p.get('visionScore', 0)
         ret['details']['controlWardsPlaced'] += p.get('controlWardsPlaced', 0)
@@ -94,6 +94,15 @@ def summary(game_name, tagline, region):
         # Potential emotes (not found in test.json)
         if 'emotesUsed' in p:
             ret['details']['emotesUsed'] += p['emotesUsed']
+
+    sorted_friends = sorted(
+        ret['details']['participants'].items(),
+        key=lambda x: x[1],
+        reverse=True
+    )[:3]
+
+    # Replace participants list with top 3
+    ret['details']['participants'] = dict(sorted_friends)
 
     return ret
     
