@@ -24,17 +24,12 @@ const HeroSection = () => {
       opacity: 0.5
     })
 
-    // Title animation
-    gsap.from(titleRef.current, {
-      scrollTrigger: {
-        trigger: titleRef.current,
-        start: "top 80%"
-      },
-      y: 100,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out"
-    })
+    // Title animation on mount so the year is visible immediately
+    gsap.fromTo(
+      titleRef.current,
+      { y: 100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
+    )
   }, [])
 
   return (
