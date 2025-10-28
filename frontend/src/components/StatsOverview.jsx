@@ -70,7 +70,7 @@ const StatsOverview = () => {
               whileHover={{ scale: 1.05, y: -10 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Card className="stat-card bg-card/50 backdrop-blur-sm border-2 border-border hover:border-primary transition-all duration-300 p-8 text-center relative overflow-hidden group shadow-glow-gold">
+              <Card className="stat-card bg-card border-2 border-border hover:border-primary transition-all duration-300 p-8 text-center relative overflow-hidden group shadow-glow-gold">
                 <div className="absolute inset-0 bg-gradient-gold opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
                 <div className="relative z-10">
                   <div className="text-5xl mb-4 animate-pulse-glow">

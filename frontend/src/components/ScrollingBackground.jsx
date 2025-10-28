@@ -15,7 +15,7 @@ const ScrollingBackground = () => {
     const circles = []
 
     // Create noise circles
-    for (let i = 0; i < 3000; i++) {
+    for (let i = 0; i < 200; i++) {
       const div = document.createElement("div")
       div.classList.add("noise-circle")
       const n1 = simplex(i * 0.003, i * 0.0033)

@@ -110,6 +110,22 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .bg-gradient-blue {
+    background: var(--gradient-blue);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .bg-gradient-purple {
+    background: var(--gradient-purple);
+   -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
   .bg-card\/50 {
     background-color: hsl(222 47% 8% / 0.5);
   }

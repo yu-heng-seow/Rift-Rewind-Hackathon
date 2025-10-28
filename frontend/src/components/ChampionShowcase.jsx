@@ -75,22 +75,22 @@ const ChampionShowcase = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-black mb-4 bg-gradient-blue bg-clip-text text-transparent">
+          <h2 className="text-6xl md:text-7xl font-black mb-4 bg-gradient-blue bg-clip-text text-transparent">
             Champion Mastery
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-2xl text-muted-foreground">
             Your most played legends
           </p>
         </motion.div>
 
-        <div className="space-y-8">
+        <div className="space-y-10">
           {champions.map((champion, index) => (
             <motion.div
               key={champion.name}
               whileHover={{ scale: 1.02 }}
               className="champion-card"
             >
-              <Card className="overflow-hidden bg-card/30 backdrop-blur-md border-2 border-border hover:border-secondary transition-all duration-300 shadow-glow-blue">
+              <Card className="overflow-hidden bg-card/40 backdrop-blur-lg border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
                 <div className="flex flex-col md:flex-row">
                   <div className="relative w-full md:w-1/3 h-64 md:h-auto overflow-hidden">
                     <img
@@ -99,57 +99,55 @@ const ChampionShowcase = () => {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/90" />
-                    <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-4 py-2 rounded-full font-bold">
+                    <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-4 py-2 rounded-full font-bold text-lg">
                       #{index + 1}
                     </div>
                   </div>
 
-                  <div className="flex-1 p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <h3 className="text-4xl font-black text-foreground">
+                  <div className="flex-1 px-12 py-10 flex flex-col justify-center gap-10">
+                    <div className="flex flex-wrap items-center gap-5">
+                      <h3 className="text-5xl font-black text-foreground">
                         {champion.name}
                       </h3>
-                      <div className="flex items-center gap-2">
-                        {Array.from({ length: champion.mastery }).map(
-                          (_, i) => (
-                            <span key={i} className="text-primary text-2xl">
-                              ★
-                            </span>
-                          )
-                        )}
+                      <div className="flex items-center gap-2 text-3xl leading-none">
+                        {Array.from({ length: champion.mastery }).map((_, i) => (
+                          <span key={i} className="text-primary">
+                            ⭐
+                          </span>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div>
-                        <div className="text-sm text-muted-foreground mb-1">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center md:text-left">
+                      <div className="flex flex-col items-center md:items-start gap-2">
+                        <div className="text-xs font-semibold tracking-[0.3em] text-muted-foreground uppercase">
                           Mastery Points
                         </div>
-                        <div className="text-2xl font-bold text-primary">
+                        <div className="text-3xl font-bold text-primary">
                           {champion.points}
                         </div>
                       </div>
-                      <div>
-                        <div className="text-sm text-muted-foreground mb-1">
+                      <div className="flex flex-col items-center md:items-start gap-2">
+                        <div className="text-xs font-semibold tracking-[0.3em] text-muted-foreground uppercase">
                           Games Played
                         </div>
-                        <div className="text-2xl font-bold text-secondary">
+                        <div className="text-3xl font-bold text-secondary">
                           {champion.games}
                         </div>
                       </div>
-                      <div>
-                        <div className="text-sm text-muted-foreground mb-1">
+                      <div className="flex flex-col items-center md:items-start gap-2">
+                        <div className="text-xs font-semibold tracking-[0.3em] text-muted-foreground uppercase">
                           Win Rate
                         </div>
-                        <div className="text-2xl font-bold text-accent">
+                        <div className="text-3xl font-bold text-accent">
                           {champion.winRate}%
                         </div>
                       </div>
-                      <div>
-                        <div className="text-sm text-muted-foreground mb-1">
+                      <div className="flex flex-col items-center md:items-start gap-2">
+                        <div className="text-xs font-semibold tracking-[0.3em] text-muted-foreground uppercase">
                           KDA
                         </div>
-                        <div className="text-2xl font-bold text-foreground">
+                        <div className="text-3xl font-bold text-foreground">
                           {champion.kda}
                         </div>
                       </div>
