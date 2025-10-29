@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react"
-import { motion } from "framer-motion"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { Card } from "@/components/ui/card"
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Card } from "@/components/ui/card";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 const champions = [
   {
@@ -15,7 +15,7 @@ const champions = [
     winRate: 54,
     kda: "3.2",
     image:
-      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg"
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
   },
   {
     name: "Zed",
@@ -25,7 +25,7 @@ const champions = [
     winRate: 51,
     kda: "3.8",
     image:
-      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg"
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg",
   },
   {
     name: "Lee Sin",
@@ -35,17 +35,17 @@ const champions = [
     winRate: 49,
     kda: "2.9",
     image:
-      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg"
-  }
-]
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg",
+  },
+];
 
 const ChampionShowcase = () => {
-  const sectionRef = useRef(null)
+  const sectionRef = useRef(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return
+    if (!sectionRef.current) return;
 
-    const championCards = sectionRef.current.querySelectorAll(".champion-card")
+    const championCards = sectionRef.current.querySelectorAll(".champion-card");
 
     championCards.forEach((card, index) => {
       gsap.from(card, {
@@ -53,18 +53,18 @@ const ChampionShowcase = () => {
           trigger: card,
           start: "top 85%",
           end: "top 40%",
-          scrub: 1
+          scrub: 1,
         },
         x: index % 2 === 0 ? -100 : 100,
         opacity: 0,
-        rotation: index % 2 === 0 ? -5 : 5
-      })
-    })
-  }, [])
+        rotation: index % 2 === 0 ? -5 : 5,
+      });
+    });
+  }, []);
 
   return (
     <section
-      // ref={sectionRef}
+      ref={sectionRef}
       className="py-24 px-4 bg-gradient-to-b from-background to-background/50"
     >
       <div className="container mx-auto max-w-6xl">
@@ -162,7 +162,7 @@ const ChampionShowcase = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ChampionShowcase
+export default ChampionShowcase;
