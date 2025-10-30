@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 45 100% 95%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 45 100% 95%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 45 100% 95%;
+
+    --primary: 45 93% 51%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 175 82% 39%;
+    --secondary-foreground: 222 47% 5%;
+
+    --muted: 222 47% 15%;
+    --muted-foreground: 45 20% 70%;
+
+    --accent: 270 91% 65%;
+    --accent-foreground: 45 100% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 45 100% 95%;
+
+    --border: 222 47% 20%;
+    --input: 222 47% 20%;
+    --ring: 45 93% 51%;
+
+    --radius: 0.5rem;
+
+    /* LoL themed gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(45, 93%, 51%) 0%, hsl(38, 90%, 45%) 100%);
+    --gradient-blue: linear-gradient(135deg, hsl(175, 82%, 39%) 0%, hsl(190, 90%, 50%) 100%);
+    --gradient-purple: linear-gradient(135deg, hsl(270, 91%, 65%) 0%, hsl(280, 85%, 55%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(222, 47%, 8%) 0%, hsl(222, 47%, 5%) 50%, hsl(270, 50%, 10%) 100%);
+    
+    /* Shadows */
+    --shadow-glow-gold: 0 0 30px hsl(45 93% 51% / 0.3);
+    --shadow-glow-blue: 0 0 30px hsl(175 82% 39% / 0.3);
+    --shadow-glow-purple: 0 0 30px hsl(270 91% 65% / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .noise-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+  }
+}
