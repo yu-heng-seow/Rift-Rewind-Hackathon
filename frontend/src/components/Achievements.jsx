@@ -12,7 +12,7 @@ export default function Achievements({ playerData }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h3 className="text-lg font-semibold text-primary mb-2">Recent Achievements</h3>
+      <h3 className="text-lg font-semibold text-primary mb-1">Recent Achievements</h3>
       {achievements.map((a, i) => (
         <motion.div
           key={i}
@@ -25,7 +25,7 @@ export default function Achievements({ playerData }) {
             <div className="flex items-center gap-3">
               <span className="text-2xl">{a.icon}</span>
               <div>
-                <p className="font-medium">{a.title}</p>
+                <p className="text-sm font-medium">{a.title}</p>
                 <p className="text-xs text-muted-foreground">{a.description}</p>
               </div>
             </div>

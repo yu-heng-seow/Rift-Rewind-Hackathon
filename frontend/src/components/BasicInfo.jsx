@@ -61,7 +61,6 @@ export default function BasicInfo({ playerData }) {
           value={playerData.yearStats.gamesPlayed}
           subtitle={`${playerData.yearStats.wins}W ${playerData.yearStats.losses}L`}
           icon={Trophy}
-          trend="+12% from last month"
         />
         <StatCard
           title="KDA Ratio"
@@ -72,7 +71,6 @@ export default function BasicInfo({ playerData }) {
         <StatCard
           title="Hours Played"
           value={playerData.yearStats.hoursPlayed}
-          subtitle="This year"
           icon={Clock}
           trend="+8% from last month"
         />

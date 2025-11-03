@@ -1,6 +1,7 @@
 import BasicInfo from "@/components/BasicInfo";
 import StatsOverview from "@/components/StatsOverview";
 import Achievements from "@/components/Achievements";
+import BestDuo from "@/components/BestDuo";
 
 const playerData = {
   summoner: {
@@ -63,25 +64,26 @@ const playerData = {
 
 export default function Dashboard() {
   return (
-    <section className="flex flex-col lg:flex-row gap-6 w-full px-6 py-8 bg-background min-h-screen">
+    <section className="flex flex-col lg:flex-row gap-4 w-full px-6 py-8 bg-background min-h-screen">
       {/* Left Panel */}
       <div className="w-full lg:w-1/4 lg:sticky top-8 self-start">
-        <div className="h-screen bg-card rounded-2xl shadow-sm border border-border p-6 overflow-y-auto max-h-[calc(100vh-4rem)]">
+        <div className="h-screen bg-card rounded-2xl shadow-sm border border-border p-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
           <BasicInfo playerData={playerData} />
         </div>
       </div>
 
       {/* Center Panel (auto expands) */}
       <div className="flex-1 min-w-0">
-        <div className="h-full bg-card rounded-2xl shadow-sm border border-border p-6">
+        <div className="h-screen bg-card rounded-2xl shadow-sm border border-border p-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
           <StatsOverview playerData={playerData} />
         </div>
       </div>
 
       {/* Right Panel */}
-      <div className="w-full lg:w-1/4 lg:sticky top-8 self-start">
-        <div className="h-screen bg-card rounded-2xl shadow-sm border border-border p-6 overflow-y-auto max-h-[calc(100vh-4rem)]">
+      <div className="w-full lg:w-1/4 xl:w-1/5 lg:sticky top-8 self-start">
+        <div className="h-screen flex flex-col bg-card rounded-2xl shadow-sm border border-border p-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
           <Achievements playerData={playerData} />
+          <BestDuo />
         </div>
       </div>
     </section>
