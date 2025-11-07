@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trophy, Target, Clock, Award, TrendingUp } from "lucide-react";
 
 const StatCard = ({ title, value, subtitle, icon: Icon, trend }) => (
-  <Card className="w-full py-4 hover:shadow-lg transition-all duration-300 hover:border-primary">
+  <Card className="w-full py-4 border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
     <CardHeader className="flex flex-row items-center justify-between pb-2">
       <CardTitle className="text-sm font-medium text-muted-foreground">
         {title}

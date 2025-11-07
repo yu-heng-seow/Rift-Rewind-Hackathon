@@ -20,7 +20,9 @@ export default function Achievements({ playerData }) {
           transition={{ type: "spring", stiffness: 200 }}
         >
           <Card
-            className={`flex items-center justify-between p-4 border rounded-xl ${rarityColors[a.rarity]}`}
+            className={`flex items-center justify-between p-4 rounded-xl 
+              border-2 border-border/80 hover:border-secondary transition-all 
+              duration-300 shadow-glow-blue ${rarityColors[a.rarity]}`}
           >
             <div className="flex items-center gap-3">
               <span className="text-2xl">{a.icon}</span>

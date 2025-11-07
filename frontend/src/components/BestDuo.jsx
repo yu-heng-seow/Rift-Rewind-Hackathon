@@ -188,7 +188,7 @@ const BestDuo = () => {
           <div className={`relative w-full h-[400px] transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
             {/* Card Back */}
             <div className="absolute inset-0 backface-hidden">
-              <Card className="py-0 h-full overflow-hidden border-2 shadow-lg shadow-purple-500/30">
+              <Card className="py-0 h-full overflow-hidden border-2 border-border/80 transition-all duration-300 shadow-glow-blue">
                 <div className="relative h-full">
                   <img
                     src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80"
@@ -211,17 +211,17 @@ const BestDuo = () => {
                   </div>
 
                   {/* Decorative corners */}
-                  <div className="absolute top-4 left-2 w-12 h-12 border-t-3 border-l-3 rounded-xl" />
-                  <div className="absolute top-4 right-2 w-12 h-12 border-t-3 border-r-3 rounded-xl" />
-                  <div className="absolute bottom-4 left-2 w-12 h-12 border-b-3 border-l-3 rounded-xl" />
-                  <div className="absolute bottom-4 right-2 w-12 h-12 border-b-3 border-r-3 rounded-xl" />
+                  <div className="absolute top-4 left-2 w-12 h-12 border-t-3 border-l-3 rounded-xl border-white/70" />
+                  <div className="absolute top-4 right-2 w-12 h-12 border-t-3 border-r-3 rounded-xl border-white/70" />
+                  <div className="absolute bottom-4 left-2 w-12 h-12 border-b-3 border-l-3 rounded-xl border-white/70" />
+                  <div className="absolute bottom-4 right-2 w-12 h-12 border-b-3 border-r-3 rounded-xl border-white/70" />
                 </div>
               </Card>
             </div>
 
             {/* Card Front - Duo Profiles */}
             <div className="absolute inset-0 backface-hidden rotate-y-180">
-              <Card className="h-full overflow-hidden border-2 shadow-xl shadow-purple-500/40">
+              <Card className="h-full overflow-hidden border-2 border-border/80 transition-all duration-300 shadow-glow-blue">
                 <div className="h-full flex flex-col px-2">
                   <div className="flex-1 overflow-y-auto">
                     {/* Player 1 Profile */}

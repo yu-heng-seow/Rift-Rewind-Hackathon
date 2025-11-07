@@ -21,6 +21,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import ChampionShowcase from "@/components/ChampionShowcase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -69,7 +70,7 @@ const StatsOverview = ({ playerData }) => {
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Performance Radar Chart */}
-            <Card className="stat-card">
+            <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
               <CardHeader>
                 <CardTitle>Performance Metrics</CardTitle>
                 <CardDescription>Your strengths and areas for improvement</CardDescription>
@@ -94,7 +95,7 @@ const StatsOverview = ({ playerData }) => {
             </Card>
 
             {/* Role Distribution */}
-            <Card className="stat-card">
+            <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
               <CardHeader>
                 <CardTitle>Role Distribution</CardTitle>
                 <CardDescription>Games played by role</CardDescription>
@@ -125,7 +126,7 @@ const StatsOverview = ({ playerData }) => {
           </div>
 
           {/* Monthly Progress */}
-          <Card className="stat-card">
+          <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
             <CardHeader>
               <CardTitle>Monthly Progress</CardTitle>
               <CardDescription>Win/Loss and KDA trends throughout the year</CardDescription>
@@ -150,40 +151,10 @@ const StatsOverview = ({ playerData }) => {
 
         {/* ---------------- Champions Tab ---------------- */}
         <TabsContent value="champions" className="space-y-4">
-          <Card className="stat-card">
-            <CardHeader>
-              <CardTitle>Top Champions</CardTitle>
-              <CardDescription>Your most played champions this year</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {playerData.topChampions.map((champ, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="text-2xl font-bold text-muted-foreground">#{index + 1}</div>
-                      <div>
-                        <p className="font-semibold">{champ.name}</p>
-                        <div className="flex gap-2 mt-1">
-                          <Badge variant="outline" className="text-xs">{champ.role}</Badge>
-                          <Badge variant="secondary" className="text-xs">{champ.games} games</Badge>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-primary">{champ.winRate}%</p>
-                      <p className="text-xs text-muted-foreground">KDA {champ.kda}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <ChampionShowcase champions={playerData.topChampions} />
 
           {/* Champion Performance Chart */}
-          <Card className="stat-card">
+          <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
             <CardHeader>
               <CardTitle>Champion Performance</CardTitle>
               <CardDescription>Win rate comparison</CardDescription>
@@ -205,7 +176,7 @@ const StatsOverview = ({ playerData }) => {
         {/* ---------------- Performance Tab ---------------- */}
         <TabsContent value="performance" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="stat-card">
+            <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
               <CardHeader>
                 <CardTitle className="text-sm">Avg Kills</CardTitle>
               </CardHeader>
@@ -216,7 +187,7 @@ const StatsOverview = ({ playerData }) => {
               </CardContent>
             </Card>
 
-            <Card className="stat-card">
+            <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
               <CardHeader>
                 <CardTitle className="text-sm">Avg Deaths</CardTitle>
               </CardHeader>
@@ -227,7 +198,7 @@ const StatsOverview = ({ playerData }) => {
               </CardContent>
             </Card>
 
-            <Card className="stat-card">
+            <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
               <CardHeader>
                 <CardTitle className="text-sm">Avg Assists</CardTitle>
               </CardHeader>
@@ -240,7 +211,7 @@ const StatsOverview = ({ playerData }) => {
           </div>
 
           {/* Performance Breakdown */}
-          <Card className="stat-card">
+          <Card className="stat-card border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
             <CardHeader>
               <CardTitle>Performance Breakdown</CardTitle>
               <CardDescription>Detailed analysis of your playstyle metrics</CardDescription>
