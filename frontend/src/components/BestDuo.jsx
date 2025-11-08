@@ -5,54 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { X, Users, Trophy, Target, Zap } from "lucide-react"
 
-const bestDuo = {
-  id: 1,
-  player: {
-    name: "ShadowAssassin",
-    avatar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
-    mainChampion: "Yasuo",
-    championIcon: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Yasuo.png",
-    rank: "Diamond II",
-    winRate: 54,
-    kda: "3.2:1",
-    gamesPlayed: 487,
-    performance: {
-      farming: 85,
-      vision: 65,
-      aggression: 92,
-      teamplay: 78,
-      consistency: 70,
-      versatility: 88
-    }
-  },
-  topPartner: {
-    name: "StormBringer",
-    avatar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malphite_0.jpg",
-    mainChampion: "Malphite",
-    championIcon: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Malphite.png",
-    rank: "Diamond III",
-    winRate: 58,
-    kda: "2.8:1",
-    gamesPlayed: 412,
-    performance: {
-      farming: 72,
-      vision: 78,
-      aggression: 75,
-      teamplay: 90,
-      consistency: 85,
-      versatility: 70
-    }
-  },
-  duoStats: {
-    gamesPlayed: 156,
-    winRate: 62,
-    synergy: 94,
-    bestCombo: "Yasuo Ult + Malphite Knockup"
-  }
-}
-
 const RadarChart = ({ player1Data, player2Data }) => {
-  const metrics = ['Farming', 'Vision', 'Aggression', 'Teamfight', 'Objective', 'Mechanics']
+  const metrics = ['Farming', 'Vision', 'Aggression', 'Teamplay', 'Consistency', 'Versatility']
   const center = 150
   const radius = 100
   const points = 6
@@ -157,7 +111,7 @@ const RadarChart = ({ player1Data, player2Data }) => {
   )
 }
 
-const BestDuo = () => {
+const BestDuo = ({ playerData }) => {
   const [showDetails, setShowDetails] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
 
@@ -229,29 +183,29 @@ const BestDuo = () => {
                       <div className="bg-black/40 backdrop-blur">
                         <div className="flex items-center gap-4 mb-3">
                           <img
-                            src={bestDuo.player.championIcon}
-                            alt={bestDuo.player.mainChampion}
+                            src={playerData.summoner.championIcon}
+                            alt={playerData.summoner.mainChampion}
                             className="w-12 h-12 rounded-full border-2 border-purple-400 shadow-lg"
                           />
                           <div className="flex-1">
-                            <h4 className="text-md font-semibold text-white overflow-x-hidden">{bestDuo.player.name}</h4>
+                            <h4 className="text-md font-semibold text-white overflow-x-hidden">{playerData.summoner.name}</h4>
                             <Badge variant="outline" className="mt-1 text-xs border-purple-400 text-purple-300">
-                              {bestDuo.player.rank}
+                              {playerData.summoner.rank}
                             </Badge>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-2">
                           <div className="bg-purple-950/50 rounded p-2 text-center">
                             <div className="text-xs text-gray-400">Games</div>
-                            <div className="text-sm font-bold text-white">{bestDuo.player.gamesPlayed}</div>
+                            <div className="text-sm font-bold text-white">{playerData.yearStats.gamesPlayed}</div>
                           </div>
                           <div className="bg-purple-950/50 rounded p-2 text-center">
                             <div className="text-xs text-gray-400">Win Rate</div>
-                            <div className="text-sm font-bold text-green-400">{bestDuo.player.winRate}%</div>
+                            <div className="text-sm font-bold text-green-400">{playerData.summoner.winRate}%</div>
                           </div>
                           <div className="bg-purple-950/50 rounded p-2 text-center">
                             <div className="text-xs text-gray-400">KDA</div>
-                            <div className="text-sm font-bold text-yellow-400">{bestDuo.player.kda}</div>
+                            <div className="text-sm font-bold text-yellow-400">{playerData.summoner.kda}</div>
                           </div>
                         </div>
                       </div>
@@ -273,29 +227,29 @@ const BestDuo = () => {
                       <div className="bg-black/40 backdrop-blur">
                         <div className="flex items-center gap-4 mb-3">
                           <img
-                            src={bestDuo.topPartner.championIcon}
-                            alt={bestDuo.topPartner.mainChampion}
+                            src={playerData.bestDuo.championIcon}
+                            alt={playerData.bestDuo.mainChampion}
                             className="w-12 h-12 rounded-full border-2 border-pink-400 shadow-lg"
                           />
                           <div className="flex-1">
-                            <h4 className="text-md font-semibold text-white overflow-x-hidden">{bestDuo.topPartner.name}</h4>
+                            <h4 className="text-md font-semibold text-white overflow-x-hidden">{playerData.bestDuo.name}</h4>
                             <Badge variant="outline" className="mt-1 text-xs border-pink-400 text-pink-300">
-                              {bestDuo.topPartner.rank}
+                              {playerData.bestDuo.rank}
                             </Badge>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-2">
                           <div className="bg-pink-950/50 rounded p-2 text-center">
                             <div className="text-xs text-gray-400">Games</div>
-                            <div className="text-sm font-bold text-white">{bestDuo.topPartner.gamesPlayed}</div>
+                            <div className="text-sm font-bold text-white">{playerData.bestDuo.gamesPlayed}</div>
                           </div>
                           <div className="bg-pink-950/50 rounded p-2 text-center">
                             <div className="text-xs text-gray-400">Win Rate</div>
-                            <div className="text-sm font-bold text-green-400">{bestDuo.topPartner.winRate}%</div>
+                            <div className="text-sm font-bold text-green-400">{playerData.bestDuo.winRate}%</div>
                           </div>
                           <div className="bg-pink-950/50 rounded p-2 text-center">
                             <div className="text-xs text-gray-400">KDA</div>
-                            <div className="text-sm font-bold text-yellow-400">{bestDuo.topPartner.kda}</div>
+                            <div className="text-sm font-bold text-yellow-400">{playerData.bestDuo.kda}</div>
                           </div>
                         </div>
                       </div>
@@ -305,12 +259,12 @@ const BestDuo = () => {
                     <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-xl p-4 border-2 border-yellow-500/50">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-bold text-yellow-400">Synergy Score</span>
-                        <span className="text-xl font-black text-yellow-400">{bestDuo.duoStats.synergy}</span>
+                        <span className="text-xl font-black text-yellow-400">{playerData.duoStats.synergy}</span>
                       </div>
                       <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
                         <div 
                           className="h-full bg-gradient-to-r from-yellow-500 to-orange-400 rounded-full transition-all duration-1000"
-                          style={{ width: `${bestDuo.duoStats.synergy}%` }}
+                          style={{ width: `${playerData.duoStats.synergy}%` }}
                         />
                       </div>
                     </div>
@@ -368,9 +322,9 @@ const BestDuo = () => {
                       ★ LEGENDARY DUO ANALYSIS ★
                     </Badge>
                     <h2 className="text-4xl font-black text-white mb-2">
-                      {bestDuo.player.name} & {bestDuo.topPartner.name}
+                      {playerData.summoner.name} & {playerData.bestDuo.name}
                     </h2>
-                    <p className="text-gray-400">{bestDuo.duoStats.bestCombo}</p>
+                    <p className="text-gray-400">{playerData.duoStats.bestCombo}</p>
                   </div>
 
                   <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 items-start">
@@ -379,45 +333,45 @@ const BestDuo = () => {
                       <div className="relative mb-6">
                         <div className="absolute inset-0 bg-purple-500/30 rounded-lg blur-2xl" />
                         <img
-                          src={bestDuo.player.avatar}
-                          alt={bestDuo.player.mainChampion}
+                          src={playerData.summoner.avatar}
+                          alt={playerData.summoner.mainChampion}
                           className="relative w-48 h-48 object-cover object-top rounded-lg border-2 border-purple-500 shadow-2xl"
                         />
                         <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
                           <img
-                            src={bestDuo.player.championIcon}
-                            alt={bestDuo.player.mainChampion}
+                            src={playerData.bestDuo.championIcon}
+                            alt={playerData.bestDuo.mainChampion}
                             className="w-16 h-16 rounded-full border-2 border-purple-400 bg-gray-900 shadow-lg"
                           />
                         </div>
                       </div>
                       <h3 className="text-3xl font-black text-white mb-2 text-center mt-4">
-                        {bestDuo.player.name}
+                        {playerData.summoner.name}
                       </h3>
                       <div className="text-purple-300 font-bold text-lg mb-1">
-                        {bestDuo.player.mainChampion}
+                        {playerData.bestDuo.mainChampion}
                       </div>
                       <Badge variant="outline" className="mb-4 border-purple-400 text-purple-300">
-                        {bestDuo.player.rank}
+                        {playerData.summoner.rank}
                       </Badge>
 
                       <div className="w-full space-y-2">
                         <div className="bg-black/40 backdrop-blur rounded-lg p-3 border border-purple-500/30">
                           <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Total Games</span>
-                            <span className="text-white font-bold">{bestDuo.player.gamesPlayed}</span>
+                            <span className="text-white font-bold">{playerData.yearStats.gamesPlayed}</span>
                           </div>
                         </div>
                         <div className="bg-black/40 backdrop-blur rounded-lg p-3 border border-purple-500/30">
                           <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Win Rate</span>
-                            <span className="text-green-400 font-bold">{bestDuo.player.winRate}%</span>
+                            <span className="text-green-400 font-bold">{playerData.summoner.winRate}%</span>
                           </div>
                         </div>
                         <div className="bg-black/40 backdrop-blur rounded-lg p-3 border border-purple-500/30">
                           <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">KDA Ratio</span>
-                            <span className="text-yellow-400 font-bold">{bestDuo.player.kda}</span>
+                            <span className="text-yellow-400 font-bold">{playerData.summoner.kda}</span>
                           </div>
                         </div>
                       </div>
@@ -428,19 +382,19 @@ const BestDuo = () => {
 
                       <div className="bg-black/40 backdrop-blur rounded-2xl px-6 py-2 border border-purple-500/30">
                         <RadarChart 
-                          player1Data={bestDuo.player.performance}
-                          player2Data={bestDuo.topPartner.performance}
+                          player1Data={Object.fromEntries(playerData.performanceMetrics.map(m => [m.metric.toLowerCase(), m.value]))}
+                          player2Data={Object.fromEntries(playerData.bestDuo.performanceMetrics.map(m => [m.metric.toLowerCase(), m.value]))}
                         />
                       </div>
 
                       <div className="mt-6 flex gap-4 text-sm">
                         <div className="flex items-center gap-2">
                           <div className="w-4 h-4 bg-purple-500 rounded-full" />
-                          <span className="text-gray-300">{bestDuo.player.name}</span>
+                          <span className="text-gray-300">{playerData.summoner.name}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-4 h-4 bg-pink-500 rounded-full" />
-                          <span className="text-gray-300">{bestDuo.topPartner.name}</span>
+                          <span className="text-gray-300">{playerData.bestDuo.name}</span>
                         </div>
                       </div>
 
@@ -455,15 +409,15 @@ const BestDuo = () => {
                         <div className="grid grid-cols-3 gap-3 text-center">
                           <div className="bg-black/30 rounded-lg p-3">
                             <div className="text-xs text-gray-400 mb-1">Games</div>
-                            <div className="text-xl font-bold text-white">{bestDuo.duoStats.gamesPlayed}</div>
+                            <div className="text-xl font-bold text-white">{playerData.duoStats.gamesPlayed}</div>
                           </div>
                           <div className="bg-black/30 rounded-lg p-3">
                             <div className="text-xs text-gray-400 mb-1">Win Rate</div>
-                            <div className="text-xl font-bold text-green-400">{bestDuo.duoStats.winRate}%</div>
+                            <div className="text-xl font-bold text-green-400">{playerData.duoStats.winRate}%</div>
                           </div>
                           <div className="bg-black/30 rounded-lg p-3">
                             <div className="text-xs text-gray-400 mb-1">Synergy</div>
-                            <div className="text-xl font-bold text-yellow-400">{bestDuo.duoStats.synergy}</div>
+                            <div className="text-xl font-bold text-yellow-400">{playerData.duoStats.synergy}</div>
                           </div>
                         </div>
                       </div>
@@ -474,45 +428,45 @@ const BestDuo = () => {
                       <div className="relative mb-6">
                         <div className="absolute inset-0 bg-pink-500/30 rounded-lg blur-2xl" />
                         <img
-                          src={bestDuo.topPartner.avatar}
-                          alt={bestDuo.topPartner.mainChampion}
+                          src={playerData.bestDuo.avatar}
+                          alt={playerData.bestDuo.mainChampion}
                           className="relative w-48 h-48 object-cover object-top rounded-lg border-2 border-pink-500 shadow-2xl"
                         />
                         <div className="absolute -bottom-4 left-1/2 -translate-x-1/2">
                           <img
-                            src={bestDuo.topPartner.championIcon}
-                            alt={bestDuo.topPartner.mainChampion}
+                            src={playerData.bestDuo.championIcon}
+                            alt={playerData.bestDuo.mainChampion}
                             className="w-16 h-16 rounded-full border-2 border-pink-400 bg-gray-900 shadow-lg"
                           />
                         </div>
                       </div>
                       <h3 className="text-3xl font-black text-white mb-2 text-center mt-4">
-                        {bestDuo.topPartner.name}
+                        {playerData.bestDuo.name}
                       </h3>
                       <div className="text-pink-300 font-bold text-lg mb-1">
-                        {bestDuo.topPartner.mainChampion}
+                        {playerData.bestDuo.mainChampion}
                       </div>
                       <Badge variant="outline" className="mb-4 border-pink-400 text-pink-300">
-                        {bestDuo.topPartner.rank}
+                        {playerData.bestDuo.rank}
                       </Badge>
 
                       <div className="w-full space-y-2">
                         <div className="bg-black/40 backdrop-blur rounded-lg p-3 border border-pink-500/30">
                           <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Total Games</span>
-                            <span className="text-white font-bold">{bestDuo.topPartner.gamesPlayed}</span>
+                            <span className="text-white font-bold">{playerData.bestDuo.gamesPlayed}</span>
                           </div>
                         </div>
                         <div className="bg-black/40 backdrop-blur rounded-lg p-3 border border-pink-500/30">
                           <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">Win Rate</span>
-                            <span className="text-green-400 font-bold">{bestDuo.topPartner.winRate}%</span>
+                            <span className="text-green-400 font-bold">{playerData.bestDuo.winRate}%</span>
                           </div>
                         </div>
                         <div className="bg-black/40 backdrop-blur rounded-lg p-3 border border-pink-500/30">
                           <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-sm">KDA Ratio</span>
-                            <span className="text-yellow-400 font-bold">{bestDuo.topPartner.kda}</span>
+                            <span className="text-yellow-400 font-bold">{playerData.bestDuo.kda}</span>
                           </div>
                         </div>
                       </div>

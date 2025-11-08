@@ -24,10 +24,6 @@ const StatCard = ({ title, value, subtitle, icon: Icon, trend }) => (
 );
 
 export default function BasicInfo({ playerData }) {
-  const kda = (
-    (playerData.yearStats.totalKills + playerData.yearStats.totalAssists) /
-    playerData.yearStats.totalDeaths
-  ).toFixed(2);
 
   return (
     <div className="w-full flex flex-col space-y-6">
@@ -64,7 +60,7 @@ export default function BasicInfo({ playerData }) {
         />
         <StatCard
           title="KDA Ratio"
-          value={kda}
+          value={playerData.summoner.kda}
           subtitle={`${playerData.yearStats.totalKills} / ${playerData.yearStats.totalDeaths} / ${playerData.yearStats.totalAssists}`}
           icon={Target}
         />

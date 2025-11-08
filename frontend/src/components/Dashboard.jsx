@@ -6,9 +6,13 @@ import BestDuo from "@/components/BestDuo";
 const playerData = {
   summoner: {
     name: "ShadowAssassin",
+    avatar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
+    mainChampion: "Yasuo",
+    championIcon: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Yasuo.png",
     level: 247,
     rank: "Diamond II",
     lp: 63,
+    kda: "2.5:1",
     winRate: 54.2,
     region: "NA",
   },
@@ -65,6 +69,30 @@ const playerData = {
     { title: "One-Trick Wonder", description: "100+ games on Yasuo", icon: "⚔️" },
     { title: "Vision Master", description: "Placed 10,000+ wards", icon: "👁️" },
   ],
+  bestDuo: {
+    name: "StormBringer",
+    avatar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malphite_0.jpg",
+    mainChampion: "Malphite",
+    championIcon: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Malphite.png",
+    rank: "Diamond III",
+    winRate: 58,
+    kda: "2.8:1",
+    gamesPlayed: 412,
+    performanceMetrics: [
+      { metric: "Farming", value: 72, description: "CS per minute and gold efficiency" },
+      { metric: "Vision", value: 78, description: "Ward placement and map awareness" },
+      { metric: "Aggression", value: 75, description: "Early game pressure and kill participation" },
+      { metric: "Teamplay", value: 90, description: "Objective control and team coordination" },
+      { metric: "Consistency", value: 85, description: "Performance stability across games" },
+      { metric: "Versatility", value: 70, description: "Champion pool diversity and adaptability" },
+    ],
+  },
+  duoStats: {
+    gamesPlayed: 156,
+    winRate: 62,
+    synergy: 94,
+    bestCombo: "Yasuo Ult + Malphite Knockup"
+  },
 };
 
 export default function Dashboard() {
@@ -88,7 +116,7 @@ export default function Dashboard() {
       <div className="w-full lg:w-1/4 xl:w-1/5 lg:sticky top-8 self-start">
         <div className="h-screen flex flex-col bg-card rounded-2xl shadow-sm border border-border p-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
           <Achievements playerData={playerData} />
-          <BestDuo />
+          <BestDuo playerData={playerData}/>
         </div>
       </div>
     </section>
