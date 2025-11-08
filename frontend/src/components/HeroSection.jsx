@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 gsap.registerPlugin(ScrollTrigger)
 
-const HeroSection = () => {
+const HeroSection = ({ player }) => {
   const heroRef = useRef(null)
   const titleRef = useRef(null)
 
@@ -81,13 +81,22 @@ const HeroSection = () => {
       </div>
 
       <div className="relative z-10 text-center px-4">
+        <motion.h2
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-2xl md:text-5xl text-foreground/70 tracking-wide mb-8"
+        >
+          Welcome, <span className="font-bold text-primary">{player.name}</span>
+        </motion.h2>
+
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <h2 className="text-xl md:text-2xl text-primary font-semibold mb-4 tracking-wider">
+          <h2 className="text-xl md:text-2xl font-semibold mb-4 tracking-wider">
             YOUR YEAR IN REVIEW
           </h2>
         </motion.div>
@@ -99,7 +108,7 @@ const HeroSection = () => {
             textShadow: "0 0 40px rgba(200, 155, 60, 0.5)"
           }}
         >
-          2024
+          2025
         </h1>
 
         <motion.p

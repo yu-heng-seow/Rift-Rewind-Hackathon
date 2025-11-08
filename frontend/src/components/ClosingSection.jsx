@@ -39,43 +39,12 @@ const ClosingSection = () => {
           transition={{ duration: 1 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-6xl md:text-7xl lg:text-8xl font-black mb-8 bg-gradient-gold bg-clip-text text-transparent">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 bg-gradient-gold bg-clip-text text-transparent">
             See You on the Rift
           </h2>
           <p className="text-2xl md:text-3xl text-foreground/80 mb-12">
-            Your legend continues in 2025
+            Your legend continues in 2026
           </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-card/30 backdrop-blur-sm rounded-lg border-2 border-primary"
-            >
-              <div className="text-5xl mb-4">🎯</div>
-              <div className="text-3xl font-bold text-primary mb-2">487</div>
-              <div className="text-sm text-muted-foreground">Total Games</div>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-card/30 backdrop-blur-sm rounded-lg border-2 border-secondary"
-            >
-              <div className="text-5xl mb-4">🏆</div>
-              <div className="text-3xl font-bold text-secondary mb-2">
-                52.7%
-              </div>
-              <div className="text-sm text-muted-foreground">Win Rate</div>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="p-6 bg-card/30 backdrop-blur-sm rounded-lg border-2 border-accent"
-            >
-              <div className="text-5xl mb-4">⚡</div>
-              <div className="text-3xl font-bold text-accent mb-2">324</div>
-              <div className="text-sm text-muted-foreground">Hours Played</div>
-            </motion.div>
-          </div>
 
           <motion.p
             initial={{ y: 30, opacity: 0 }}
