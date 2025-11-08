@@ -56,6 +56,7 @@ export default function BasicInfo({ playerData }) {
         <StatCard
           title="Hours Played"
           value={playerData.yearStats.hoursPlayed}
+          subtitle="hours"
           icon={Clock}
         />
         <StatCard
