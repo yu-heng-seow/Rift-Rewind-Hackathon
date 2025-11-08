@@ -14,9 +14,6 @@ const Index = () => {
       <ScrollingBackground />
       <div className="relative z-10">
         <HeroSection />
-        <ChampionShowcase />
-        <CardRevealSection />
-        <PlaystyleAnalysis />
         <TimelineSection />
         <ClosingSection />
       </div>

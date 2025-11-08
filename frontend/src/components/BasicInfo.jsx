@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Target, Clock, Award, TrendingUp } from "lucide-react";
+import PlaystyleAnalysis from "./PlaystyleAnalysis";
 
-const StatCard = ({ title, value, subtitle, icon: Icon, trend }) => (
+const StatCard = ({ title, value, subtitle, icon: Icon }) => (
   <Card className="w-full py-4 border-2 border-border/80 hover:border-secondary transition-all duration-300 shadow-glow-blue">
     <CardHeader className="flex flex-row items-center justify-between pb-2">
       <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -13,12 +14,6 @@ const StatCard = ({ title, value, subtitle, icon: Icon, trend }) => (
     <CardContent>
       <div className="text-2xl font-bold">{value}</div>
       {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
-      {trend && (
-        <div className="flex items-center mt-2 text-xs text-green-500">
-          <TrendingUp className="h-3 w-3 mr-1" />
-          {trend}
-        </div>
-      )}
     </CardContent>
   </Card>
 );
@@ -51,12 +46,17 @@ export default function BasicInfo({ playerData }) {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-col-2 lg:grid-cols-1 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <StatCard
           title="Games Played"
           value={playerData.yearStats.gamesPlayed}
           subtitle={`${playerData.yearStats.wins}W ${playerData.yearStats.losses}L`}
           icon={Trophy}
+        />
+        <StatCard
+          title="Hours Played"
+          value={playerData.yearStats.hoursPlayed}
+          icon={Clock}
         />
         <StatCard
           title="KDA Ratio"
@@ -65,18 +65,14 @@ export default function BasicInfo({ playerData }) {
           icon={Target}
         />
         <StatCard
-          title="Hours Played"
-          value={playerData.yearStats.hoursPlayed}
-          icon={Clock}
-          trend="+8% from last month"
-        />
-        <StatCard
           title="Pentakills"
           value={playerData.yearStats.pentakills}
           subtitle={`${playerData.yearStats.quadrakills} Quadrakills`}
           icon={Award}
         />
       </div>
+
+      <PlaystyleAnalysis insights={playerData.insights} />
     </div>
   );
 }

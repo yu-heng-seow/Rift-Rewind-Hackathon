@@ -28,6 +28,29 @@ const playerData = {
     quadrakills: 34,
     triplekills: 156,
   },
+  insights: [
+    {
+      title: "Aggressive Playstyle",
+      description:
+        "You averaged 8.2 kills per game, showing a proactive approach to teamfights",
+      icon: "⚔️"
+    },
+    {
+      title: "Vision Master",
+      description: "487 wards placed - keeping your team informed and safe",
+      icon: "👁️"
+    },
+    {
+      title: "Objective Focused",
+      description: "73% dragon participation rate, you know what wins games",
+      icon: "🐉"
+    },
+    {
+      title: "Comeback King",
+      description: "12 victories from behind - never surrender mentality",
+      icon: "👑"
+    }
+  ],
   performanceMetrics: [
     { metric: "Farming", value: 78, description: "CS per minute and gold efficiency" },
     { metric: "Vision", value: 65, description: "Ward placement and map awareness" },
