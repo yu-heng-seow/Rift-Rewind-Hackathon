@@ -1,6 +1,3 @@
-const AWS_ACCESS_KEY_ID = import.meta.env.VITE_AWS_ACCESS_KEY_ID;
-const AWS_SECRET_ACCESS_KEY = import.meta.env.VITE_AWS_SECRET_ACCESS_KEY;
-
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
@@ -72,8 +69,8 @@ const Saw = () => {
         const client = new BedrockAgentRuntimeClient({
           region: "us-east-1",
           credentials: {
-            accessKeyId: AWS_ACCESS_KEY_ID,
-            secretAccessKey: AWS_SECRET_ACCESS_KEY,
+            accessKeyId: "AKIASLCWLO4GLQL62G7C",
+            secretAccessKey: "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",
           },
         });
 
