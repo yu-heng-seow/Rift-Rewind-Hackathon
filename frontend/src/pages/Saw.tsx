@@ -15,6 +15,13 @@ import {
 } from "recharts";
 import { Card } from "@/components/ui/card";
 
+const SECRETACCESSKEY = import.meta.env.VITE_AWS_SECRET_ACCESS_KEY;
+
+const ACCESSKEYID = import.meta.env.VITE_AWS_ACCESS_KEY_ID;
+const AGENTID = import.meta.env.VITE_AGENT_ID;
+
+const AGENTALIAS = import.meta.env.VITE_AGENT_ALIAS;
+
 interface GpiScore {
   metric: string;
   value: number;
@@ -69,14 +76,14 @@ const Saw = () => {
         const client = new BedrockAgentRuntimeClient({
           region: "us-east-1",
           credentials: {
-            accessKeyId: "AKIASLCWLO4GLQL62G7C",
-            secretAccessKey: "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",
+            accessKeyId: ACCESSKEYID,
+            secretAccessKey: SECRETACCESSKEY,
           },
         });
 
         const input = {
-          agentId: "UFSZYQKWFU",
-          agentAliasId: "BIMY05KDZF",
+          agentId: AGENTID,
+          agentAliasId: AGENTALIAS,
           sessionId: `${Date.now()}`,
           inputText: `Analyze strengths and weaknesses for player ${gameName}#${tagLine} in region ${region}`,
         };
