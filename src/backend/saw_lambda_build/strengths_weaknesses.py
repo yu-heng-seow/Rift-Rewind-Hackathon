@@ -5,19 +5,21 @@ from mastery_api import get_top_champion_masteries
 from summoner_api import get_summoner_by_puuid
 from account_api import get_account_by_riot_id
 import os
-import dotenv
+# import dotenv
 import requests
 
-dotenv.load_dotenv()
-api_key = os.getenv("RIOT_API_KEY")
+# dotenv.load_dotenv()
+api_key = os.environ.get("RIOT_API_KEY")
 
-START_EPOCH_TIME_STAMP = 1735689600  # Jan 1, 2025
+START_EPOCH_TIME_STAMP = 1730379600  # Nov 1, 2024
+END_EPOCH_TIME_STAMP = 1735461600  # Nov 1, 2025
 
 # just getting raw data and putting them into metrics[] from api calls
 def get_raw_metrics(api_key, puuid, region):
     metrics = defaultdict(int)
     metrics['champion_variety'] = set() # use sets because each champion is unique, set removes duplicates
     impact_list = []
+    total_matches_fetched = 0
 
     match_ids = get_match_ids_by_puuid(api_key, region, puuid, count=20)
     for match_id in match_ids:
@@ -39,7 +41,9 @@ def get_raw_metrics(api_key, puuid, region):
         metrics['champion_variety'].add(p.get('championName', 'Unknown'))
         impact_list.append(p.get('kills', 0) + p.get('assists', 0) - p.get('deaths', 0))
 
-    return metrics, impact_list
+        total_matches_fetched += 1
+
+    return metrics, impact_list, total_matches_fetched
 
 # derived metrics from raw metrics, impact_list, mastery_data
 def get_derived_metrics(metrics, impact_list, mastery_data):
@@ -74,7 +78,7 @@ def calculate_scores(metrics, derived):
     }
 
 ## Logics for each category
-# 🧩 FARMING
+#  FARMING
 def score_farming(cs_total, gold_total, total_games):
     avg_cs = cs_total / total_games
     avg_gold = gold_total / total_games
@@ -82,29 +86,29 @@ def score_farming(cs_total, gold_total, total_games):
     gold_score = (avg_gold / 12000) * 30  # 12k is a decent gold/game
     return min(100, cs_score + gold_score)
 
-# 👁️ VISION
+#  VISION
 def score_vision(vision_total, total_games):
     avg_vision = vision_total / total_games
     return min(100, (avg_vision / BENCHMARKS['vision_score_per_game']) * 100)
 
-# ⚔️ AGGRESSION
+#  AGGRESSION
 def score_aggression(kda, avg_damage):
     kda_score = (kda / BENCHMARKS['kda_good']) * 50
     damage_score = (avg_damage / BENCHMARKS['damage_per_game']) * 50
     return min(100, kda_score + damage_score)
 
-# 🤝 TEAMPLAY
+#  TEAMPLAY
 def score_teamplay(win_rate, assists_ratio):
     win_score = (win_rate / BENCHMARKS['win_rate_percent']) * 60
     assist_score = assists_ratio / BENCHMARKS['assists_ratio'] * 40
     return min(100, win_score + assist_score)
 
-# 🔁 CONSISTENCY
+#  CONSISTENCY
 def score_consistency(impact_list):
     std_dev = np.std(impact_list)
     return max(0, 100 - (std_dev / BENCHMARKS['impact_std_max']) * 100)
 
-# 🧠 VERSATILITY
+#  VERSATILITY
 def score_versatility(unique_champs, avg_mastery):
     champ_score = (unique_champs / BENCHMARKS['unique_champs_good']) * 50
     mastery_score = (avg_mastery / BENCHMARKS['avg_mastery_good']) * 50
@@ -195,7 +199,7 @@ def analyze_strengths_weaknesses(game_name, tag_line, region):
     summoner = get_summoner_by_puuid(api_key, platform, puuid)
     mastery_data = get_top_champion_masteries(api_key, platform, puuid, count=5)
 
-    raw_metrics, impact_list = get_raw_metrics(api_key, puuid, region)
+    raw_metrics, impact_list, total_matches_fetched = get_raw_metrics(api_key, puuid, region)
     if raw_metrics['total_games'] == 0:
         return {"error": "No matches found"}
 
@@ -217,7 +221,8 @@ def analyze_strengths_weaknesses(game_name, tag_line, region):
         'metrics': dict(raw_metrics),
         'scores': scores,
         'champion_variety': raw_metrics['champion_variety'],
-        'mastery': mastery_data
+        'mastery': mastery_data,
+        'total_matches_fetched': total_matches_fetched
     }
 
 
