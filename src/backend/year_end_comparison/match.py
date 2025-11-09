@@ -1,11 +1,11 @@
-import dotenv
-from .functionality import request_with_retry
+from functionality import request_with_retry
 import os
 
-dotenv.load_dotenv()
 api_key = os.getenv("RIOT_API_KEY")
 
-START_EPOCH_TIME_STAMP = 1735689600  # January 1, 2025
+# START_EPOCH_TIME_STAMP = 1730379600 # November 1, 2024
+START_EPOCH_TIME_STAMP = 1750379600 # November 1, 2024
+END_EPOCH_TIME_STAMP = 1761915600 # November 1, 2025
 
 REGION_ROUTING = {
     "na": "americas",
@@ -33,9 +33,9 @@ def get_routing_value(region_code):
     return REGION_ROUTING.get(region_code.lower()) 
 
 
-def get_matches_by_puuid(puuid, region="sea", api_key=api_key, start_time=START_EPOCH_TIME_STAMP, start=0, game_type=""):
+def get_matches_by_puuid(puuid, region="sea", api_key=api_key, start_time=START_EPOCH_TIME_STAMP, end_time=END_EPOCH_TIME_STAMP, start=0, game_type=""):
     region = get_routing_value(region)
-    url = f"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type={game_type}&startTime={start_time}&start={start}&count=100&api_key={api_key}"
+    url = f"https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type={game_type}&startTime={start_time}&endTime={end_time}&start={start}&count=100&api_key={api_key}"
     response = request_with_retry(url)
     return response.json()
 
