@@ -21,6 +21,7 @@ const ACCESSKEYID = import.meta.env.VITE_AWS_ACCESS_KEY_ID;
 const AGENTID = import.meta.env.VITE_AGENT_ID;
 
 const AGENTALIAS = import.meta.env.VITE_AGENT_ALIAS;
+const REGION = import.meta.env.VITE_AWS_DEFAULT_REGION;
 
 interface GpiScore {
   metric: string;
@@ -74,7 +75,7 @@ const Saw = () => {
     const fetchGpi = async () => {
       try {
         const client = new BedrockAgentRuntimeClient({
-          region: "us-east-1",
+          region: REGION,
           credentials: {
             accessKeyId: ACCESSKEYID,
             secretAccessKey: SECRETACCESSKEY,
