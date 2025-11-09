@@ -1,15 +1,20 @@
-import HeroSection from '@/components/HeroSection';
-import Dashboard from '@/components/Dashboard';
-import TimelineSection from '@/components/TimelineSection';
-import ClosingSection from '@/components/ClosingSection';
-import ScrollingBackground from '@/components/ScrollingBackground';
+import { useLocation } from "react-router-dom";
+import Dashboard from "@/components/Dashboard";
+import ClosingSection from "@/components/ClosingSection";
+import ScrollingBackground from "@/components/ScrollingBackground";
+import HeroSection from "@/components/HeroSection";
 
-const playerData = {
+// This is now the BASE template data.
+// It will be used as a fallback if fetching fails
+// or for components your agent doesn't provide data for.
+const basePlayerData = {
   summoner: {
     name: "ShadowAssassin",
-    avatar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
+    avatar:
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
     mainChampion: "Yasuo",
-    championIcon: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Yasuo.png",
+    championIcon:
+      "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Yasuo.png",
     level: 247,
     rank: "Diamond II",
     lp: 63,
@@ -34,31 +39,45 @@ const playerData = {
       title: "Aggressive Playstyle",
       description:
         "You averaged 8.2 kills per game, showing a proactive approach to teamfights",
-      icon: "⚔️"
+      icon: "⚔️",
     },
     {
       title: "Vision Master",
       description: "487 wards placed - keeping your team informed and safe",
-      icon: "👁️"
+      icon: "👁️",
     },
-    {
-      title: "Objective Focused",
-      description: "73% dragon participation rate, you know what wins games",
-      icon: "🐉"
-    },
-    {
-      title: "Comeback King",
-      description: "12 victories from behind - never surrender mentality",
-      icon: "👑"
-    }
   ],
   performanceMetrics: [
-    { metric: "Farming", value: 78, description: "CS per minute and gold efficiency" },
-    { metric: "Vision", value: 65, description: "Ward placement and map awareness" },
-    { metric: "Aggression", value: 85, description: "Early game pressure and kill participation" },
-    { metric: "Teamplay", value: 72, description: "Objective control and team coordination" },
-    { metric: "Consistency", value: 68, description: "Performance stability across games" },
-    { metric: "Versatility", value: 58, description: "Champion pool diversity and adaptability" },
+    {
+      metric: "Farming",
+      value: 78,
+      description: "CS per minute and gold efficiency",
+    },
+    {
+      metric: "Vision",
+      value: 65,
+      description: "Ward placement and map awareness",
+    },
+    {
+      metric: "Aggression",
+      value: 85,
+      description: "Early game pressure and kill participation",
+    },
+    {
+      metric: "Teamplay",
+      value: 72,
+      description: "Objective control and team coordination",
+    },
+    {
+      metric: "Consistency",
+      value: 68,
+      description: "Performance stability across games",
+    },
+    {
+      metric: "Versatility",
+      value: 58,
+      description: "Champion pool diversity and adaptability",
+    },
   ],
   monthlyProgress: [
     { month: "Jan", wins: 45, losses: 38, kda: 3.2 },
@@ -69,16 +88,28 @@ const playerData = {
     { month: "Jun", wins: 26, losses: 25, kda: 3.3 },
   ],
   topChampions: [
-    { name: "Yasuo", mastery: 7, points: "487,392", games: 87, winRate: 58, 
-      kda: 3.9, role: "Mid", image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg" },
-    { name: "Zed", mastery: 7, points: "412,847", games: 65, winRate: 61, 
-      kda: 4.2, role: "Mid", image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg" },
-    { name: "Lee Sin", games: 54, mastery: 6, points: "324,156", winRate: 52, 
-      kda: 3.4, role: "Jungle", image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg" },
-    { name: "Thresh", games: 43, mastery: 6, points: "310,298", winRate: 56, 
-      kda: 3.1, role: "Support", image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Thresh_0.jpg" },
-    { name: "Vayne", games: 38, mastery: 5, points: "309,788", winRate: 55, 
-      kda: 3.7, role: "ADC",image: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Vayne_0.jpg" },
+    {
+      name: "Yasuo",
+      mastery: 7,
+      points: "487,392",
+      games: 87,
+      winRate: 58,
+      kda: 3.9,
+      role: "Mid",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg",
+    },
+    {
+      name: "Zed",
+      mastery: 7,
+      points: "412,847",
+      games: 65,
+      winRate: 61,
+      kda: 4.2,
+      role: "Mid",
+      image:
+        "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zed_0.jpg",
+    },
   ],
   roleDistribution: [
     { role: "Mid", value: 40.7 },
@@ -88,45 +119,74 @@ const playerData = {
     { role: "Top", value: 4.7 },
   ],
   recentAchievements: [
-    { title: "Pentakill Master", description: "Earned 7 pentakills this year", icon: "🔥" },
-    { title: "Consistency King", description: "20+ game win streak", icon: "👑" },
-    { title: "One-Trick Wonder", description: "100+ games on Yasuo", icon: "⚔️" },
-    { title: "Vision Master", description: "Placed 10,000+ wards", icon: "👁️" },
+    {
+      title: "Pentakill Master",
+      description: "Earned 7 pentakills this year",
+      icon: "🔥",
+    },
+    {
+      title: "Consistency King",
+      description: "20+ game win streak",
+      icon: "👑",
+    },
   ],
   bestDuo: {
     name: "StormBringer",
-    avatar: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malphite_0.jpg",
+    avatar:
+      "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Malphite_0.jpg",
     mainChampion: "Malphite",
-    championIcon: "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Malphite.png",
+    championIcon:
+      "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/Malphite.png",
     rank: "Diamond III",
     winRate: 58,
     kda: "2.8:1",
     gamesPlayed: 412,
     performanceMetrics: [
-      { metric: "Farming", value: 72, description: "CS per minute and gold efficiency" },
-      { metric: "Vision", value: 78, description: "Ward placement and map awareness" },
-      { metric: "Aggression", value: 75, description: "Early game pressure and kill participation" },
-      { metric: "Teamplay", value: 90, description: "Objective control and team coordination" },
-      { metric: "Consistency", value: 85, description: "Performance stability across games" },
-      { metric: "Versatility", value: 70, description: "Champion pool diversity and adaptability" },
+      { metric: "Farming", value: 72 },
+      { metric: "Vision", value: 78 },
+      { metric: "Aggression", value: 75 },
+      { metric: "Teamplay", value: 90 },
+      { metric: "Consistency", value: 85 },
+      { metric: "Versatility", value: 70 },
     ],
   },
   duoStats: {
     gamesPlayed: 156,
     winRate: 62,
     synergy: 94,
-    bestCombo: "Yasuo Ult + Malphite Knockup"
+    bestCombo: "Yasuo Ult + Malphite Knockup",
   },
 };
 
 const Index = () => {
+  const location = useLocation();
+  const fetchedData = location.state?.fetchedData;
+
+  // Merge the fetched data with the base template data
+  const playerData = {
+    ...basePlayerData,
+    // Overwrite summoner data with fetched name/region
+    summoner: {
+      ...basePlayerData.summoner,
+      ...fetchedData?.summoner,
+    },
+    // Overwrite insights with the AI summary
+    insights: fetchedData?.insights || basePlayerData.insights,
+    // Overwrite performance metrics with AI data
+    performanceMetrics:
+      fetchedData?.performanceMetrics || basePlayerData.performanceMetrics,
+
+    // Keep the rest of the hardcoded data (BestDuo, topChampions, etc.)
+    // Your agent can be expanded to provide this data in the future
+  };
+
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
       <ScrollingBackground />
       <div className="relative z-10">
-        <HeroSection player={playerData.summoner}/>
-        <Dashboard playerData={playerData}/>
-        <ClosingSection player={playerData.summoner}/>
+        <HeroSection player={playerData.summoner} />
+        <Dashboard playerData={playerData} />
+        <ClosingSection player={playerData.summoner} />
       </div>
     </div>
   );
