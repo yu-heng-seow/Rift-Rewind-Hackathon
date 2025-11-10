@@ -39,13 +39,18 @@ def summary(game_name, tagline, region):
     puuid = acc_details['puuid']
     details = summoner.get_summoner_details_by_puuid(puuid, region)
     rank_info = summoner.get_summoner_rank_by_puuid(puuid, region)
+    
+    # Will be populated after we determine the most played champion
     base = {
         'summoner': {
             'name': acc_details['gameName'],
-            'tagLine': acc_details['tagLine'],
+            'avatar': '',  # Will be set later
+            'mainChampion': '',  # Will be set later
+            'championIcon': '',  # Will be set later
             'level': details['summonerLevel'],
             'rank': rank_info['rank'],
             'lp': rank_info['lp'],
+            'kda': '0:1',  # Will be calculated later
             'winRate': 0,
             'region': region.upper(),
         },
@@ -222,6 +227,9 @@ def summary(game_name, tagline, region):
         key=lambda x: x[1]['games'],
         reverse=True
     )[:5]
+    
+    # Get the most played champion (top 1)
+    most_played_champion = top_champs[0][0] if top_champs else "Unknown"
 
     # Get mastery data for the summoner
     mastery_data = summoner.get_summoner_mastery_by_puuid(puuid, region)
@@ -235,6 +243,33 @@ def summary(game_name, tagline, region):
             'championPoints': mastery.get('championPoints'),
             'tokensEarned': mastery.get('tokensEarned', 0)
         }
+    
+    # Update summoner info with main champion details
+    base['summoner']['mainChampion'] = most_played_champion
+    base['summoner']['avatar'] = f"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{most_played_champion}_0.jpg"
+    base['summoner']['championIcon'] = f"https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/{most_played_champion}.png"
+
+    # Track role for each champion in top 5
+    champion_roles = {}
+    for name in [champ[0] for champ in top_champs]:
+        # Get the most played role for this champion
+        champ_role_counts = defaultdict(int)
+        for match_id in matches:
+            m = match.get_match_details_by_match_id(match_id)
+            metadata, info = m['metadata'], m['info']
+            if puuid not in metadata['participants']:
+                continue
+            idx = metadata['participants'].index(puuid)
+            p = info['participants'][idx]
+            if p.get('championName') == name:
+                raw_pos = (p.get('individualPosition') or "").upper()
+                role = POSITION_ALIASES.get(raw_pos, "Unknown")
+                if role != "Unknown":
+                    champ_role_counts[role] += 1
+        if champ_role_counts:
+            champion_roles[name] = max(champ_role_counts.items(), key=lambda x: x[1])[0]
+        else:
+            champion_roles[name] = "Unknown"
 
     base['topChampions'] = []
     for name, data in top_champs:
@@ -253,21 +288,32 @@ def summary(game_name, tagline, region):
         
         # Get mastery info for this champion
         mastery_info = mastery_lookup.get(champion_id, {})
+        
+        # Format mastery points with commas
+        mastery_points = mastery_info.get('championPoints', 0)
+        formatted_points = f"{mastery_points:,}"
 
         base['topChampions'].append({
             'name': name,
+            'mastery': mastery_info.get('championLevel', 0),
+            'points': formatted_points,
             'games': games,
-            'wins': wins,
-            'losses': losses,
             'winRate': winrate,
             'kda': kda,
-            'masteryLevel': mastery_info.get('championLevel', 0),
-            'masteryPoints': mastery_info.get('championPoints', 0),
+            'role': champion_roles.get(name, "Unknown"),
+            'image': f"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{name}_0.jpg"
         })
 
-    # === Compute winrate ===
+    # === Compute winrate and KDA ===
     if stats['gamesPlayed'] > 0:
         base['summoner']['winRate'] = round(stats['wins'] / stats['gamesPlayed'] * 100, 1)
+        
+        # Calculate overall KDA ratio
+        total_kills = stats['kills']
+        total_deaths = stats['deaths']
+        total_assists = stats['assists']
+        kda_ratio = round((total_kills + total_assists) / max(1, total_deaths), 1)
+        base['summoner']['kda'] = f"{kda_ratio}:1"
 
     if duo_counts:
         best_puuid, games_together = max(duo_counts.items(), key=lambda item: item[1])
