@@ -42,6 +42,7 @@ def summary(game_name, tagline, region):
     base = {
         'summoner': {
             'name': acc_details['gameName'],
+            'tagLine': acc_details['tagLine'],
             'level': details['summonerLevel'],
             'rank': rank_info['rank'],
             'lp': rank_info['lp'],
@@ -222,6 +223,19 @@ def summary(game_name, tagline, region):
         reverse=True
     )[:5]
 
+    # Get mastery data for the summoner
+    mastery_data = summoner.get_summoner_mastery_by_puuid(puuid, region)
+    
+    # Create a lookup dictionary for mastery by champion ID
+    mastery_lookup = {}
+    for mastery in mastery_data:
+        champ_id = mastery.get('championId')
+        mastery_lookup[champ_id] = {
+            'championLevel': mastery.get('championLevel'),
+            'championPoints': mastery.get('championPoints'),
+            'tokensEarned': mastery.get('tokensEarned', 0)
+        }
+
     base['topChampions'] = []
     for name, data in top_champs:
         wins = data.get('wins', 0)
@@ -234,13 +248,21 @@ def summary(game_name, tagline, region):
         winrate = round(wins / games * 100, 1) if games else 0
         kda = round((kills + assists) / max(1, deaths), 2)
 
+        # Get champion ID from champion_id_map
+        champion_id = champion_id_map.get(name)
+        
+        # Get mastery info for this champion
+        mastery_info = mastery_lookup.get(champion_id, {})
+
         base['topChampions'].append({
             'name': name,
             'games': games,
             'wins': wins,
             'losses': losses,
             'winRate': winrate,
-            'kda': kda
+            'kda': kda,
+            'masteryLevel': mastery_info.get('championLevel', 0),
+            'masteryPoints': mastery_info.get('championPoints', 0),
         })
 
     # === Compute winrate ===

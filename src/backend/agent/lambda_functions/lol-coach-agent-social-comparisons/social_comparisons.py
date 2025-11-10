@@ -1,4 +1,5 @@
 # Import the main analysis function from your script
+import numpy as np
 from strengths_weaknesses import analyze_strengths_weaknesses
 import json
 
@@ -85,6 +86,38 @@ def check_complementary_styles(archetype1, archetype2):
     
     return False
 
+def calculate_cosine_similarity(scores1, scores2):
+    """
+    Calculates the cosine similarity between two players' score vectors.
+    
+    Args:
+        scores1 (dict): Player 1's score dictionary.
+        scores2 (dict): Player 2's score dictionary.
+        
+    Returns:
+        float: A similarity score between 0.0 and 100.0.
+    """
+    # Use the priority list to ensure vectors are in the same order
+    ordered_keys = ARCHETYPE_PRIORITY
+    
+    # Create vectors, using 0 if a score is missing
+    vec1 = np.array([scores1.get(key, 0) for key in ordered_keys])
+    vec2 = np.array([scores2.get(key, 0) for key in ordered_keys])
+    
+    # Calculate norms (magnitudes)
+    norm1 = np.linalg.norm(vec1)
+    norm2 = np.linalg.norm(vec2)
+    
+    # Prevent division by zero if a player has all 0 scores
+    if norm1 == 0 or norm2 == 0:
+        return 0.0
+        
+    # Calculate cosine similarity
+    similarity = np.dot(vec1, vec2) / (norm1 * norm2)
+    
+    # Convert to percentage and round
+    return round(similarity * 100, 1)
+
 def generate_social_comparison(player1_data, player2_data):
     """
     Generates a full comparison report for two players.
@@ -133,9 +166,12 @@ def generate_social_comparison(player1_data, player2_data):
         'is_complementary': is_complementary
     }
     
+    similarity_percent = calculate_cosine_similarity(player1_scores, player2_scores)
+    
     return {
         'score_comparison': comparison,
-        'playstyle_synergy': synergy_report
+        'playstyle_synergy': synergy_report,
+        'playstyle_similarity_percent': similarity_percent
     }
 
 if __name__ == "__main__":
