@@ -32,7 +32,7 @@ export default function Achievements({ playerData }) {
               </div>
             </div>
             <span className="text-xs font-semibold px-2 py-1 rounded-full border">
-              {a.rarity}
+              {a.level}
             </span>
           </Card>
         </motion.div>

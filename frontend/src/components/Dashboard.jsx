@@ -3,8 +3,13 @@ import BasicInfo from "@/components/BasicInfo";
 import StatsOverview from "@/components/StatsOverview";
 import Achievements from "@/components/Achievements";
 import BestDuo from "@/components/BestDuo";
+import { useYES, useSAW, useCOMP } from "@/hooks/useAPI";
 
 export default function Dashboard({ playerData }) {
+  const { fetchYES } = useYES();
+  const { fetchSAW } = useSAW();
+  const { fetchCOMP } = useCOMP();
+
   return (
     <section className="flex flex-col lg:flex-row gap-4 w-full px-6 py-8 bg-background min-h-screen">
       {/* Left Panel */}
@@ -30,7 +35,8 @@ export default function Dashboard({ playerData }) {
         <div className="h-screen flex flex-col bg-card rounded-2xl shadow-sm border border-border max-h-[calc(100vh-4rem)]">
           <ScrollArea className="h-full p-4">
             <Achievements playerData={playerData} />
-            <BestDuo playerData={playerData}/>
+            <BestDuo playerData={playerData}
+            />
           </ScrollArea>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InputArea from "@/components/InputArea";
 import { motion } from "framer-motion";
@@ -38,9 +37,6 @@ export default function Landing() {
   return (
     <div className="dark bg-black text-white overflow-hidden">
       <div className="relative overflow-hidden min-h-screen">
-        {/* Header on top */}
-        <Header className="z-30" />
-
         {/* Background */}
         <motion.div
           className="absolute inset-0 bg-cover bg-center brightness-50 z-10"
