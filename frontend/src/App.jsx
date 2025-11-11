@@ -10,6 +10,7 @@ export default function App() {
         <Route path="/test" element={<TestAPI />} />
         <Route path="/" element={<Landing />} />
         <Route path="/yes" element={<TestLayout />} />
+        <Route path="/riot.txt" element={<RiotText />} />
         {/* Handle 404 Not Found pages */}
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
